@@ -4,7 +4,7 @@ import "../styles/App.css";
 function App() {
   let time = new Date().toLocaleTimeString();
 
-  const [CurrTime, setTime] = useState("");
+  const [CurrTime, setTime] = useState(time);
   const UpdateData = () => {
     let date = new Date();
     let updateHour = date.getHours();
