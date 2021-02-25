@@ -4,15 +4,25 @@ import "../styles/App.css";
 function App() {
   let time = new Date().toLocaleTimeString();
 
-  const [CurrTime, setTime] = useState(time);
+  const [CurrTime, setTime] = useState("");
   const UpdateData = () => {
-    time = new Date().toLocaleTimeString();
-    setTime(time);
+    let date = new Date();
+    let updateHour = date.getHours();
+    let updateMinute = date.getMinutes();
+    let updateSecond = date.getSeconds();
+    let updateAMPM = updateHour < 13 ? "AM" : "PM";
+    updateHour = updateHour > 12 ? updateHour - 12 : updateHour;
+    if (updateMinute < 10) updateMinute = `0${updateMinute}`;
+    if (updateSecond < 10) updateSecond = `0${updateSecond}`;
+    let updatedTime = `${updateHour}:${updateMinute}:${updateSecond} ${updateAMPM}`;
+    setTime(updatedTime);
   };
-  let set = setInterval(UpdateData, 1000);
   useEffect(() => {
-    clearInterval(set);
-  });
+    let set = setInterval(UpdateData, 1000);
+    return () => {
+      clearInterval(set);
+    };
+  }, []);
   return (
     <div id="main" className="Clock">
       <h1 id="time">{CurrTime}</h1>
