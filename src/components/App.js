@@ -1,33 +1,40 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useState } from "react";
 import "../styles/App.css";
 
-function App() {
-  let time = new Date().toLocaleTimeString();
-
-  const [CurrTime, setTime] = useState(time);
-  const UpdateData = () => {
-    let date = new Date();
-    let updateHour = date.getHours();
-    let updateMinute = date.getMinutes();
-    let updateSecond = date.getSeconds();
-    let updateAMPM = updateHour < 13 ? "AM" : "PM";
-    updateHour = updateHour > 12 ? updateHour - 12 : updateHour;
-    if (updateMinute < 10) updateMinute = `0${updateMinute}`;
-    if (updateSecond < 10) updateSecond = `0${updateSecond}`;
-    let updatedTime = `${updateHour}:${updateMinute}:${updateSecond} ${updateAMPM}`;
-    setTime(updatedTime);
-  };
-  useEffect(() => {
-    let set = setInterval(UpdateData, 1000);
-    return () => {
-      clearInterval(set);
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        time: new Date()
     };
-  }, []);
-  return (
-    <div id="main" className="Clock">
-      <h1 id="time">{CurrTime}</h1>
-    </div>
-  );
+  }
+
+componentDidMount(){
+  console.log("Mounted is successfull")
+    this.timerID = setInterval(() => {
+        this.tick();
+    }, 1000);
+}
+
+componentWillUnmount(){
+  console.log("Component is Unmounted successfully")
+    clearInterval(this.timerID);
+}
+
+tick(){
+    this.setState({
+        time: new Date(),
+    });
+}
+
+
+  render() {
+    return (
+      <div className="Clock">
+        <h3 id="time">{this.state.time.toLocaleTimeString()}</h3>
+      </div>
+    );
+  }
 }
 
 export default App;
